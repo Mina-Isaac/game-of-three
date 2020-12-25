@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/game-of-three/static/css/main.abf7da93.chunk.css",
-    "main.js": "/game-of-three/static/js/main.89e77065.chunk.js",
-    "main.js.map": "/game-of-three/static/js/main.89e77065.chunk.js.map",
+    "main.js": "/game-of-three/static/js/main.5877ea03.chunk.js",
+    "main.js.map": "/game-of-three/static/js/main.5877ea03.chunk.js.map",
     "runtime-main.js": "/game-of-three/static/js/runtime-main.23ecea91.js",
     "runtime-main.js.map": "/game-of-three/static/js/runtime-main.23ecea91.js.map",
     "static/js/2.e3d6ffa7.chunk.js": "/game-of-three/static/js/2.e3d6ffa7.chunk.js",
@@ -15,6 +15,6 @@
     "static/js/runtime-main.23ecea91.js",
     "static/js/2.e3d6ffa7.chunk.js",
     "static/css/main.abf7da93.chunk.css",
-    "static/js/main.89e77065.chunk.js"
+    "static/js/main.5877ea03.chunk.js"
   ]
 }
