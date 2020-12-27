@@ -12,14 +12,9 @@ import { Player } from "../../store/playerDetailsSlice";
 import Avatar from "../Avatar";
 import Controllers from "./Controllers";
 import GameStarter from "./GameStarter";
-import robot from "../../img/robot.svg";
+import robot from "../../img/robot.png";
 import Move from "./Move";
-
-const Message = styled.p`
-  font-family: cursive;
-  font-size: x-large;
-  padding: 0 10px;
-`;
+import Message from "../Common/Message";
 
 const Main = styled.div`
   display: flex;
@@ -41,28 +36,6 @@ const FirstMove = styled.div`
   background-color: #1db5e278;
 `;
 
-const Popup = styled.div`
-  width: 154px;
-  height: 39px;
-  border-radius: 19px;
-  border: 1px solid black;
-  position: absolute;
-  top: 81%;
-  left: 29%;
-  background-color: rgb(226 13 13 / 70%);
-  z-index: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
-  padding: 2%;
-  color: white;
-  font-size: x-large;
-  font-weight: bold;
-`;
-
-type PlayerId = 1 | 2;
-
 interface Props {
   player1: Player;
   player2: Player;
@@ -70,13 +43,17 @@ interface Props {
 }
 
 const GamePlay: React.FC<Props> = ({ player1, player2, playingAs }) => {
+  interface Step {
+    move: -1 | 0 | 1;
+    base: number;
+    player: typeof lastPlayer;
+  }
   const dispatch = useDispatch();
   const startingNumber = useSelector(selectStartingNumber);
   const baseNumber = useSelector(selectBaseNumber);
   const validMove = useSelector(selectValidMove)!;
-  const lastPlayer = useSelector(selectLastPlayer);
-  const [showPopup, setShowPopup] = useState(false);
-  const [list, setList] = useState<{ move: -1 | 0 | 1; base: number }[]>([]);
+  const lastPlayer = useSelector(selectLastPlayer)!;
+  const [list, setList] = useState<Step[]>([]);
   const anchorRef = React.useRef<HTMLLIElement>(null);
 
   const p1Avatar = useMemo(() => <Avatar name={player1.name} />, [
@@ -91,13 +68,14 @@ const GamePlay: React.FC<Props> = ({ player1, player2, playingAs }) => {
   );
 
   useEffect(() => {
-    if (baseNumber !== undefined)
+    if (baseNumber !== undefined) {
+      const player = (lastPlayer === "player1" && "player2") || "player1";
       setList((original) => [
         ...original,
-        { move: validMove, base: baseNumber },
+        { move: validMove, base: baseNumber, player },
       ]);
-    else setList([]);
-  }, [baseNumber, validMove]);
+    } else setList([]);
+  }, [baseNumber, validMove, lastPlayer]);
 
   useEffect(() => {
     if (
@@ -116,13 +94,6 @@ const GamePlay: React.FC<Props> = ({ player1, player2, playingAs }) => {
       anchorRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
   });
 
-  const onClick = (value: -1 | 0 | 1) => {
-    if (value !== validMove) {
-      setShowPopup(true);
-      setTimeout(() => setShowPopup(false), 400);
-    }
-  };
-
   return (
     <>
       {baseNumber === undefined ? (
@@ -132,9 +103,8 @@ const GamePlay: React.FC<Props> = ({ player1, player2, playingAs }) => {
       ) : (
         <>
           <Main>
-            {showPopup && <Popup>Wrong move</Popup>}
             <FirstMove>Game started with {startingNumber}</FirstMove>
-            {list.slice(0, -1).map(({ move, base }, index) => {
+            {list.slice(0, -1).map(({ move, base, player }, index) => {
               const newBase = base + move;
               const joiner = move >= 0 ? "+" : "-";
               return (
@@ -142,16 +112,17 @@ const GamePlay: React.FC<Props> = ({ player1, player2, playingAs }) => {
                   key={index}
                   txt1={`${base} ${joiner} ${Math.abs(move)} = ${newBase}`}
                   txt2={`${newBase} / 3 = ${newBase / 3}`}
-                  playerId={((index % 2) + 1) as PlayerId}
+                  playerKey={player}
+                  playingAs={playingAs}
                 >
-                  {(index % 2 && p2Avatar) || p1Avatar}
+                  {(player === "player1" && p1Avatar) || p2Avatar}
                 </Move>
               );
             })}
             <i ref={anchorRef}></i>
           </Main>
 
-          <Controllers playingAs={playingAs} onClick={onClick} />
+          {playingAs && <Controllers playingAs={playingAs} />}
         </>
       )}
     </>

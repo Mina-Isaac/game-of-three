@@ -31,13 +31,13 @@ const Header = styled.div`
   height: 56px;
   justify-content: center;
   align-items: center;
-  font-size:medium;
-  font-weight:700;
+  font-size: medium;
+  font-weight: 700;
   padding: 0 10px;
 `;
 
 const Content = styled.div`
-  height: calc(100% - 64px);
+  height: calc(100% - 58px);
   overflow-y: auto;
   margin-top: 2px;
   padding-top: 6px;
@@ -53,7 +53,7 @@ function App() {
   const player1 = useSelector(selectPlayer1);
   const player2 = useSelector(selectPlayer2);
   const vs = useSelector(selectVs);
-  const winnerId = useSelector(SelectWinner)
+  const winnerId = useSelector(SelectWinner);
   const players = { player1, player2 };
   const [playingAs, setPlayingAs] = useState<"player1" | "player2" | undefined>(
     undefined
@@ -61,9 +61,10 @@ function App() {
   return (
     <div className="App">
       <Container>
-        <Header><h1>Game of three!</h1></Header>
+        <Header>
+          <h1>Game of three!</h1>
+        </Header>
         <Content>
-          {winnerId && playingAs && <Overlay winner = {winnerId === playingAs} /> }
           {!player1 || !player2 ? (
             <Landing
               {...players}
@@ -79,6 +80,7 @@ function App() {
             />
           )}
         </Content>
+        <Overlay winnerId={winnerId} playingAs={playingAs} />
       </Container>
     </div>
   );

@@ -1,15 +1,9 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import styled from "styled-components";
 import { initializePlayer, Player } from "../../store/playerDetailsSlice";
 import StyledInput from "../Common/Input";
+import Message from "../Common/Message";
 import RivalSelector from "../RivalSelector";
-
-const Message = styled.p`
-  font-family: cursive;
-  font-size: x-large;
-  padding: 0 10px;
-`;
 
 interface Props {
   player1: Player | undefined;
@@ -33,7 +27,7 @@ export const Landing: React.FC<Props> = ({
     if (value !== "") {
       dispatch(
         initializePlayer({
-          type: 'human',
+          type: "human",
           name: value,
           playerKey,
         })
@@ -42,7 +36,7 @@ export const Landing: React.FC<Props> = ({
     }
   };
 
-  const submitHandler1 = generateHandler("player1")
+  const submitHandler1 = generateHandler("player1");
   const submitHandler2 = generateHandler("player2");
 
   return (

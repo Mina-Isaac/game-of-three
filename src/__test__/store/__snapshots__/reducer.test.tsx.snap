@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Reducer data flow should match a snapshot 1`] = `
+Object {
+  "game": Object {
+    "baseNumber": undefined,
+    "canPlay": Object {
+      "player1": false,
+      "player2": true,
+    },
+    "lastPlayer": "player1",
+    "startingNumber": undefined,
+    "validMove": undefined,
+    "vs": undefined,
+    "winner": undefined,
+  },
+  "player": Object {
+    "player1": undefined,
+    "player2": undefined,
+  },
+}
+`;

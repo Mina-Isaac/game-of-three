@@ -1,9 +1,27 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import cup from "../../img/cup.png";
 import ballons from "../../img/losing.png";
 import { startNewGame } from "../../store/gameSlice";
+import { PlayerState } from "../../store/playerDetailsSlice";
+
+const fadeInFromNone = keyframes`
+    0% {
+        display: none;
+        opacity: 0;
+    }
+
+    1% {
+        display: block;
+        opacity: 0;
+    }
+
+    100% {
+        display: block;
+        opacity: 1;
+    }
+`;
 
 const Container = styled.div`
   width: 100%;
@@ -13,12 +31,13 @@ const Container = styled.div`
   left: 0;
   background-color: rgb(92 196 255 / 86%);
   z-index: 2;
-  display: flex;
+  display: ${(props: { show: boolean }) => (props.show ? "flex" : "none")};
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  box-sizing: border-box;
   padding: 20%;
+  animation-name: ${fadeInFromNone};
+  animation-duration: 1s;
 `;
 
 const Div = styled.div`
@@ -39,19 +58,22 @@ const Button = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  outline: none;
-  border: none;
-  cursor: pointer;
 `;
 
-const Overlay: React.FC<{ winner: boolean }> = ({ winner }) => {
+interface Props {
+  winnerId: keyof PlayerState | undefined;
+  playingAs: keyof PlayerState | undefined;
+}
+
+const Overlay: React.FC<Props> = ({ winnerId, playingAs }) => {
+  const winner = winnerId && winnerId === playingAs;
   const text = `You ${winner ? "win" : "lose"}`;
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   return (
-    <Container>
+    <Container show={!!(winnerId && playingAs)}>
       <img src={winner ? cup : ballons} alt="end of game" width={200} />
       <Div>{text}</Div>
-      <Button onClick = {()=>dispatch(startNewGame())} >New game</Button>
+      <Button onClick={() => dispatch(startNewGame())}>New game</Button>
     </Container>
   );
 };

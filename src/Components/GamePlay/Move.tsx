@@ -1,28 +1,43 @@
 import React, { PropsWithChildren } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+import { PlayerState } from "../../store/playerDetailsSlice";
 
 interface Props {
-  playerId: 1 | 2;
   txt1: string;
   txt2: string;
+  playerKey: keyof PlayerState;
+  playingAs: keyof PlayerState | undefined;
 }
 
-type AlternatingProps = Pick<Props, "playerId">;
+interface AlternatingProps {
+  renderRight: boolean;
+}
 interface BubbleProps extends AlternatingProps {
   bottom?: boolean;
 }
 
+const scaleUp = keyframes`
+0% {
+  transform: scale(0);
+}
+
+  100% {
+    transform: scale(1);
+  }
+`;
+
 const Alternating = styled.div`
   display: flex;
   ${(props: AlternatingProps) =>
-    props.playerId === 2 && "flex-direction: row-reverse"};
+    props.renderRight && "flex-direction: row-reverse"};
   min-height: 78px;
   align-items: center;
 `;
 
 const Bubble = styled.div`
   background: ${(props: BubbleProps) =>
-    (props.playerId === 1 && "#252538") || "#aa4848"};
+    (props.renderRight && "#252538") || "#aa4848"};
+  animation: ${scaleUp} 0.3s ease forwards;
   color: white;
   display: flex;
   align-items: center;
@@ -31,10 +46,14 @@ const Bubble = styled.div`
   font-size: large;
   height: 28px;
   margin: 0 9px;
-  border-top-left-radius: ${({playerId, bottom}) => (playerId === 1 && bottom ? 0 : "18px")};
-  border-top-right-radius: ${({playerId, bottom}) => (playerId === 2 && bottom ? 0 : "18px")};;
-  border-bottom-right-radius: ${({playerId, bottom}) => (playerId === 2 && !bottom ? 0 : "18px")};
-  border-bottom-left-radius: ${({playerId, bottom}) => (playerId === 1 && !bottom ? 0 : "18px")};
+  border-top-left-radius: ${({ renderRight, bottom }) =>
+    !renderRight && bottom ? 0 : "18px"};
+  border-top-right-radius: ${({ renderRight, bottom }) =>
+    renderRight && bottom ? 0 : "18px"};
+  border-bottom-right-radius: ${({ renderRight, bottom }) =>
+    renderRight && !bottom ? 0 : "18px"};
+  border-bottom-left-radius: ${({ renderRight, bottom }) =>
+    !renderRight && !bottom ? 0 : "18px"};
 `;
 
 const Div = styled.div`
@@ -45,17 +64,24 @@ const Div = styled.div`
 `;
 
 const Move: React.FC<PropsWithChildren<Props>> = ({
-  playerId,
   txt1,
   txt2,
   children,
+  playerKey,
+  playingAs,
 }) => {
+  const renderRight =
+    (playingAs && playerKey !== playingAs) ||
+    (!playingAs && playerKey === "player2");
+
   return (
-    <Alternating playerId={playerId}>
+    <Alternating renderRight={renderRight}>
       {children}
       <Div>
-        <Bubble playerId={playerId}>{txt1}</Bubble>
-        <Bubble playerId={playerId} bottom>{txt2}</Bubble>
+        <Bubble renderRight={renderRight}>{txt1}</Bubble>
+        <Bubble renderRight={renderRight} bottom>
+          {txt2}
+        </Bubble>
       </Div>
     </Alternating>
   );

@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Controllers component should render without issues renders correctly 1`] = `
+<div
+  className="sc-bdfBwQ fMjiPE"
+>
+  <div
+    className="sc-gsTCUz dKvvNN"
+  >
+    <button
+      className="sc-dlfnbm gGNFfv"
+      disabled={true}
+      onClick={[Function]}
+    >
+      -1
+    </button>
+  </div>
+  <div
+    className="sc-gsTCUz gkedno"
+  >
+    <button
+      className="sc-dlfnbm gGNFfv"
+      disabled={true}
+      onClick={[Function]}
+    >
+      0
+    </button>
+  </div>
+  <div
+    className="sc-gsTCUz dKvvNN"
+  >
+    <button
+      className="sc-dlfnbm gGNFfv"
+      disabled={true}
+      onClick={[Function]}
+    >
+      +1
+    </button>
+  </div>
+  <div
+    className="sc-hKgILt jyVaUk"
+  >
+    Wrong move
+  </div>
+</div>
+`;

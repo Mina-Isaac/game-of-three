@@ -7,7 +7,7 @@ interface GameState {
   baseNumber: number | undefined;
   validMove: -1 | 0 | 1 | undefined;
   vs: "human" | "cpu" | undefined;
-  lastPlayer: keyof PlayerState | undefined;
+  lastPlayer: keyof PlayerState;
   canPlay: { player1: boolean; player2: boolean };
   winner: keyof PlayerState | undefined;
 }
@@ -17,8 +17,8 @@ export const initialState: GameState = {
   baseNumber: undefined,
   validMove: undefined,
   vs: undefined,
-  lastPlayer: undefined,
-  canPlay: { player1: true, player2: false },
+  lastPlayer: "player1",
+  canPlay: { player1: false, player2: true },
   winner: undefined,
 };
 
@@ -30,10 +30,11 @@ export const gameSlice = createSlice({
       const { payload } = action;
       state.startingNumber = payload;
       state.baseNumber = payload;
+      state.lastPlayer = "player1";
+      state.canPlay = { player1: false, player2: true };
       if (payload % 3 === 0) state.validMove = 0;
       else if (payload % 3 === 1) state.validMove = -1;
       else state.validMove = 1;
-      state.winner = undefined;
     },
     playNextMove: (state) => {
       const newBase = (state.baseNumber! + state.validMove!) / 3;
@@ -51,19 +52,23 @@ export const gameSlice = createSlice({
       state.vs = action.payload;
     },
     startNewGame: (state) => {
-      state.baseNumber= undefined;
-      state.validMove= undefined;
-      state.lastPlayer= undefined;
-      state.canPlay= { player1: true, player2: false };
-      state.winner= undefined;
+      state.baseNumber = undefined;
+      state.validMove = undefined;
+      state.winner = undefined;
     },
   },
 });
 
-export const { initializeGame, playNextMove, setVs, startNewGame } = gameSlice.actions;
+export const {
+  initializeGame,
+  playNextMove,
+  setVs,
+  startNewGame,
+} = gameSlice.actions;
 
 // Selectors
-export const selectStartingNumber = (state:RootState) => state.game.startingNumber
+export const selectStartingNumber = (state: RootState) =>
+  state.game.startingNumber;
 export const selectBaseNumber = (state: RootState) => state.game.baseNumber;
 export const selectVs = (state: RootState) => state.game.vs;
 export const selectValidMove = (state: RootState) => state.game.validMove;
