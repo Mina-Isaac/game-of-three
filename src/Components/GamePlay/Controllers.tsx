@@ -35,16 +35,13 @@ const Div = styled.div`
 `;
 
 const Button = styled.button`
-  --time: 0.1s;
   height: 62px;
   width: 62px;
   border: 1px solid rgb(0 0 0);
   font-size: xx-large;
   border-radius: 50%;
   background-color: #50aadd9c;
-  transition: width var(--time), height var(--time), margin-bottom var(--time),
-    margin-right var(--time), margin-left var(--time);
-
+  transition: all 130ms;
   :disabled {
     background-color: #e624244a;
   }

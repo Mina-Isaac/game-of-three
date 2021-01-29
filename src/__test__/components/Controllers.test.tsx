@@ -18,7 +18,7 @@ describe("Controllers component should render without issues", () => {
     const div = document.createElement("div");
     ReactDOM.render(
       <Provider store={store}>
-        <Controllers onClick={()=>{}} playingAs = {undefined}  />
+        <Controllers playingAs = {undefined}  />
       </Provider>,
       div
     );
@@ -28,7 +28,7 @@ describe("Controllers component should render without issues", () => {
     const tree = renderer
       .create(
         <Provider store={store}>
-          <Controllers onClick={()=>{}} playingAs = {undefined}  />
+          <Controllers playingAs = {undefined}  />
         </Provider>
       )
       .toJSON();

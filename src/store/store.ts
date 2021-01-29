@@ -19,6 +19,7 @@ const reducer = withReduxStateSync(rootReducer);
 export const store = configureStore({
   reducer,
   middleware: [stateSyncMiddleware],
+  devTools: process.env.NODE_ENV === 'development'
 });
 initStateWithPrevTab(store);
 

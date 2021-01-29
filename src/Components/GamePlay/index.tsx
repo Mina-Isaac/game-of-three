@@ -67,9 +67,10 @@ const GamePlay: React.FC<Props> = ({ player1, player2, playingAs }) => {
     [player2.type, player2.name]
   );
 
+  // This effect is responsible for populating the "list" state with steps in order for the component to render
   useEffect(() => {
     if (baseNumber !== undefined) {
-      const player = (lastPlayer === "player1" && "player2") || "player1";
+      const player = lastPlayer === "player1" ? "player2" : "player1";
       setList((original) => [
         ...original,
         { move: validMove, base: baseNumber, player },
@@ -77,22 +78,29 @@ const GamePlay: React.FC<Props> = ({ player1, player2, playingAs }) => {
     } else setList([]);
   }, [baseNumber, validMove, lastPlayer]);
 
+  //This effect is responsible for the automatic playing of CPU
   useEffect(() => {
     if (
       player2.type === "human" ||
       playingAs === undefined ||
       baseNumber === undefined ||
       baseNumber === 1
-    )
+    ) {
       return;
-    if (lastPlayer === "player1")
+    }
+
+    if (lastPlayer === "player1") {
       setTimeout(() => dispatch(playNextMove()), Math.random() * 2000);
+    }
   }, [lastPlayer, baseNumber, dispatch, player2.type, playingAs]);
 
+
+  //This effect is responsible for autoscrolling to botton as new steps are generated
   useEffect(() => {
     if (anchorRef.current)
       anchorRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
   });
+  
 
   return (
     <>
